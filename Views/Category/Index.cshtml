@@ -1,0 +1,75 @@
+﻿@model IEnumerable<CrudMvcTask.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Category List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
+</p>
+
+<!-- Search Box -->
+<p>
+    <input type="text" id="searchBox" class="form-control" placeholder="Search Category Name or Id..." />
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CategoryName)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="categoryTableBody">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryId)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CategoryName)
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", "Category", new { id = item.CategoryId })" class="btn btn-warning btn-sm" title="Edit">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a href="@Url.Action("Details", "Category", new { id = item.CategoryId })" class="btn btn-info btn-sm" title="Details">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a href="@Url.Action("Delete", "Category", new { id = item.CategoryId })"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Are you sure you want to delete this item?');" title="Delete">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- JavaScript for search functionality -->
+<script>
+    document.getElementById('searchBox').addEventListener('input', function () {
+        var searchTerm = this.value.toLowerCase();
+        var rows = document.querySelectorAll('#categoryTableBody tr');
+
+        rows.forEach(function (row) {
+            var categoryId = row.cells[0].textContent.toLowerCase();
+            var categoryName = row.cells[1].textContent.toLowerCase();
+
+            if (categoryId.includes(searchTerm) || categoryName.includes(searchTerm)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
